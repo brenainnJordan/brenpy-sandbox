@@ -1,0 +1,6 @@
+
+cmd
+
+cd C:\Python27\Lib\site-packages\PySide
+
+pyside-rcc -o D:\Repos\brenpy\brenpy\examples\qt_model_tutorials\icons\icons.py D:\Repos\brenpy\brenpy\examples\qt_model_tutorials\icons\icons.xml
