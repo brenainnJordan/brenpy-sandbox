@@ -38,6 +38,8 @@ class TabExampleWidget(Qt.QtWidgets.QWidget):
 
     def _create_tabs(self):
         self.tab_widget = Qt.QtWidgets.QTabWidget()
+        self.tab_widget.setTabsClosable(True)
+
         self.tab_widget.addTab(self.widget_1, "Tab1")
         self.tab_widget.addTab(self.widget_2, "Tab2")
         self.tab_widget.addTab(self.widget_3, "Tab3")

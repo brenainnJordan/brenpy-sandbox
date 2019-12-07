@@ -26,29 +26,16 @@ class SplitterThing(QtWidgets.QSplitter):
     def __init__(self, *args, **kwargs):
         super(SplitterThing, self).__init__(*args, **kwargs)
 
-class Test1(object):
-    def __init__(self):
-        self._widget_1 = SplitterThing()
-
-        self._widget_1.setOrientation(QtCore.Qt.Vertical)
-        self._widget_1.setChildrenCollapsible(False)
-
-        self._edit_1 = QtWidgets.QTextEdit("stuff\nthings")
-        self._widget_1.addWidget(self._edit_1)
-
-        self._edit_2 = QtWidgets.QTextEdit("stuff\nmore things")
-        self._widget_1.addWidget(self._edit_2)
-
-        self._widget_1.show()
-
-        self._widget_1.splitterMoved.connect(self._splitter_moved)
+        self.splitterMoved.connect(self._splitter_moved)
 
         self._cached_cursor_pos = None
         self._cached_splitter_pos = None
 
     def _splitter_moved(self, pos, index):
         cursor_pos = QtGui.QCursor.pos()
-        cursor_local_pos = self._widget_1.mapFromGlobal(cursor_pos)
+        cursor_local_pos = self.mapFromGlobal(cursor_pos)
+
+        print pos, cursor_local_pos, self.handleWidth()
 
         if self._cached_cursor_pos is None:
             self._cached_cursor_pos = cursor_local_pos
@@ -64,30 +51,88 @@ class Test1(object):
         if cursor_local_pos.y() == self._cached_cursor_pos.y():
             return
 
-        elif cursor_local_pos.y() > self._cached_cursor_pos.y():
+        elif all([
+            cursor_local_pos.y() > self._cached_cursor_pos.y(),
+            cursor_local_pos.y() > pos + self.handleWidth()
+        ]):
 
             # expansion limited
             delta = cursor_local_pos.y() - self._cached_cursor_pos.y()
-            print delta
 
             # temp cache sizes
-            sizes = self._widget_1.sizes()
+            sizes = self.sizes()
 
             # resize
-            self._widget_1.resize(
-                self._widget_1.width(),
-                self._widget_1.height() + delta
+            self.resize(
+                self.width(),
+                self.height() + delta
             )
 
             # update sizes
             sizes[index-1] = sizes[index-1] + delta
-            self._widget_1.setSizes(sizes)
+            self.setSizes(sizes)
 
             self._cached_cursor_pos = cursor_local_pos
             self._cached_splitter_pos = pos + delta
+
+        elif all([
+            cursor_local_pos.y() < self._cached_cursor_pos.y(),
+            cursor_local_pos.y() < pos # - self.handleWidth()
+        ]):
+
+            # expansion limited
+            delta = cursor_local_pos.y() - self._cached_cursor_pos.y()
+
+            # temp cache sizes
+            # sizes = self.sizes()
+
+            # resize
+            self.resize(
+                self.width(),
+                self.height() + delta
+            )
+
+            # update sizes
+            # sizes[index-1] = sizes[index-1] + delta
+            # self.setSizes(sizes)
+
+            self._cached_cursor_pos = cursor_local_pos
+            self._cached_splitter_pos = pos + delta
+
         else:
             self._cached_cursor_pos = cursor_local_pos
             self._cached_splitter_pos = pos
+
+class Test1(object):
+    def __init__(self):
+        self._widget_1 = SplitterThing()
+
+        self._widget_1.setOrientation(QtCore.Qt.Vertical)
+        self._widget_1.setChildrenCollapsible(False)
+        self._widget_1.setHandleWidth(50)
+
+        self._edit_1 = QtWidgets.QTextEdit("stuff\nthings")
+        self._edit_2 = QtWidgets.QTextEdit("stuff\nmore things")
+        self._edit_3 = QtWidgets.QTextEdit("stuff\nthings3")
+
+        self._btn_1 = QtWidgets.QPushButton("btn 1")
+        self._btn_1.setFixedHeight(50)
+        self._btn_2 = QtWidgets.QPushButton("btn 2")
+        self._btn_2.setFixedHeight(50)
+        self._btn_3 = QtWidgets.QPushButton("btn 3")
+        self._btn_3.setFixedHeight(50)
+        self._btn_4 = QtWidgets.QPushButton("btn 4")
+        self._btn_4.setFixedHeight(50)
+
+        self._widget_1.addWidget(self._edit_1)
+        self._widget_1.addWidget(self._btn_1)
+        self._widget_1.addWidget(self._edit_2)
+        self._widget_1.addWidget(self._btn_2)
+        self._widget_1.addWidget(self._edit_3)
+        self._widget_1.addWidget(self._btn_3)
+        self._widget_1.addWidget(self._btn_4)
+
+        self._widget_1.show()
 
         # print pos, self._widget_1.sizes(), cursor_local_pos, self._widget_1.handleWidth()
 
