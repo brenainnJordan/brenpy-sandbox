@@ -199,7 +199,7 @@ import pprint
 import json
 
 TEST_HF_FILE = r"D:\Bands\PablosDog\Gigs\160709_hawesBash\edit\hawesBash030716_003 - Copy.hfp"
-
+TEST_EDL_FILE = r"D:\Bands\PablosDog\Gigs\160709_hawesBash\edit\hawesBash030716_003_edl_test_01.edl"
 
 def generate_frame_number(hours, minutes, seconds, frames, frame_rate):
     """Calculate frame number using specified timecode and fps
@@ -437,17 +437,35 @@ class EditorSequence(HitFilmObject):
             audio_track.deserialise_xml(audio_track_element)
             self.audio.append(audio_track)
 
+    def is_drop_frame(self):
+        """TODO
+        """
+        frame_rate = self.audio_video_settings.frame_rate
+        return False
+
     def serialize_edl(self, track_index, video=True):
         """
         if video is false then audio is exported instead (TODO)
         """
         frame_rate = self.audio_video_settings.frame_rate
 
+        edl_data = "TITLE: {}\n\n".format(self.name)
+
+        if self.is_drop_frame():
+            # TODO
+            edl_data += ""
+        else:
+            edl_data += "FCM: NON-DROP FRAME\n\n\n"
+
         if video:
             video_track = self.video[track_index]
 
             for i, visual_object in enumerate(video_track.objects):
-                print visual_object.serialize_edl(i, frame_rate)
+                edl_data += "{}\n\n".format(
+                    visual_object.serialize_edl(i+1, frame_rate)
+                )
+
+        return edl_data
 
 class AudioVideoSettings(EditObject):
     def __init__(self):
@@ -672,20 +690,30 @@ class VisualObject(SequenceObjectBase):
         <Effects/>
         """
 
-    def serialize_edl(self, index, frame_rate):
+    def serialize_edl(self, index, frame_rate, extract_clip_name=True):
         seq_start_timecode = generate_timecode(self.start_frame, frame_rate)
         seq_end_timecode = generate_timecode(self.end_frame, frame_rate)
 
+        duration = self.end_frame - self.start_frame
+
+        src_start_timecode = generate_timecode(self.asset_instance_start, frame_rate)
+        src_end_timecode = generate_timecode(self.asset_instance_start+duration, frame_rate)
+
+        if extract_clip_name:
+            clip_name = self.name.split(".")[0]
+        else:
+            clip_name = "{0:03d}".format(index)
+
         edl_data = "{index} {clip_name} V C {src_start} {src_end} {seq_start} {seq_end}\n".format(
             index="{0:03d}".format(index),
-            clip_name="{0:03d}".format(index),
-            src_start=0, # TODO
-            src_end=0, # TODO
+            clip_name=clip_name,
+            src_start=format_edl_timecode(*src_start_timecode),
+            src_end=format_edl_timecode(*src_end_timecode),
             seq_start=format_edl_timecode(*seq_start_timecode),
             seq_end=format_edl_timecode(*seq_end_timecode),
         )
 
-        edl_data += "* FROM CLIP NAME: {}\n".format(self.name)
+        edl_data += "\n* FROM CLIP NAME: {}\n".format(self.name)
 
         return edl_data
 
@@ -805,12 +833,29 @@ def convert_to_edl(filepath, video_track_index):
     project = Project()
     project.deserialise_xml(project_element)
 
-    project.editor_sequence.serialize_edl(0)
+    edl_data = project.editor_sequence.serialize_edl(video_track_index)
+
+    hf_filename = os.path.basename(filepath)
+    hf_dir = os.path.dirname(filepath)
+
+    edl_filename = "{}_videoTrack{}.edl".format(
+        hf_filename.split(".")[0],
+        video_track_index
+    )
+
+    edl_filepath = os.path.join(hf_dir, edl_filename)
+    print "Exporting file... {}".format(edl_filepath)
+
+    with open(edl_filepath, 'w') as f:
+        f.write(edl_data)
+
+    return edl_data
 
 if __name__ == "__main__":
     # inspect_hf_file(TEST_HF_FILE)
     # parse_hf_file(TEST_HF_FILE)
-    convert_to_edl(TEST_HF_FILE, 0)
+
+    convert_to_edl(r"D:\Bands\PablosDog\Gigs\160709_hawesBash\edit\hawesBash030716_003_bck.hfp", 2)
 
     if False:
         fps = 24
