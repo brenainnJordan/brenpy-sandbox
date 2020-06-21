@@ -9,7 +9,7 @@ import inspect
 import json
 
 import fbx
-from brenpy.utils import bpStr
+from brenpy.core import bpStr
 
 from brenfbx.core import bfCore
 
@@ -654,7 +654,7 @@ class FbxClassIdValueItem(FbxClassIdItem):
     def set_value(self, value):
         if self.VALUE_TYPE is not None:
             if not isinstance(value, self.VALUE_TYPE):
-                raise bfCore.BFbxError(
+                raise bfCore.BfError(
                     "Value must be of type {} not {}".format(
                         self.VALUE_TYPE, type(value)
                     )

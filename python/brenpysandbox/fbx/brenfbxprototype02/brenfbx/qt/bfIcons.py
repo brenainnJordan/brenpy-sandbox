@@ -2,16 +2,8 @@
 Stuff
 """
 
-import sys
-
-import os
 import fbx
-import FbxCommon
 import inspect
-from types import NoneType
-from PySide.QtGui import QHBoxLayout, QApplication
-from numpy import indices
-from brenpy.examples.fbx.fbx_constraints import fbx_manager
 
 try:
     import Qt
@@ -25,21 +17,7 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
-from brenpy.qt import bpQtCore
-from brenpy.qt.icons import icons8
-
-from brenfbx.core import bfIO
-from brenfbx.core import bfData
-from brenfbx.core import bfUtils
 from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
-
-from brenfbx.qt import bfQtWidgets
-from brenfbx.qt import bfQtCache
-
 
 ICONS_8_RESOURCES = {
     "square": ":/icons8-square-50.png",
@@ -85,7 +63,7 @@ def get_fbx_object_pixmap(fbx_object, scale=None, scale_via_icon=True):
         type_name = fbx_object.__name__
 
     else:
-        raise bfCore.BFbxError(
+        raise bfCore.BfError(
             "Object not recognised: {}".format(fbx_object)
         )
 

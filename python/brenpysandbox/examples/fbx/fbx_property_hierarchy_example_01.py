@@ -202,7 +202,7 @@ def print_object_properties(fbx_object):
 
 def inspect_properties(file_path):
 
-    fbx_scene, fbx_manager = bfIO.load_file(
+    fbx_scene, fbx_manager = bfIO.load_fbx_file(
         file_path,
         fbx_manager=None,
         settings=None,

@@ -21,17 +21,7 @@ convenience for setting data in a view etc.
 
 '''
 
-import sys
-
-import os
 import fbx
-import FbxCommon
-import inspect
-from types import NoneType
-from PySide.QtGui import QHBoxLayout, QApplication
-from numpy import indices
-from brenpy.examples.fbx.fbx_constraints import fbx_manager
-from brenfbx.core.bfCore import BFbxError
 
 try:
     import Qt
@@ -45,18 +35,10 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
 from brenpy.qt import bpQtCore
-from brenpy.qt.icons import icons8
 
-from brenfbx.core import bfIO
-from brenfbx.core import bfData
-
-from brenfbx.core import bfUtils
+from brenfbx.utils import bfFbxUtils
 from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
 
 from brenfbx.qt import bfPropertyModels
 from brenfbx.qt import bfSceneQtCache
@@ -123,7 +105,7 @@ class BFbxSceneTreeQtModel(bpQtCore.BpAbstractItemModel):
             object_id = value
 
         if object_id not in self._scene_cache.id_data:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Object ID not found: {}".format(object_id)
             )
 
@@ -188,7 +170,7 @@ class BFbxSceneTreeQtModel(bpQtCore.BpAbstractItemModel):
             else:
                 parent_id = parent_object.GetUniqueID()
 
-                parent_row = bfUtils.get_fbx_node_index(parent_object)
+                parent_row = bfFbxUtils.get_fbx_node_index(parent_object)
 
                 # if we are at scene level
                 # we need to find a suitable row

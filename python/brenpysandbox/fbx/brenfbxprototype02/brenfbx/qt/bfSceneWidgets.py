@@ -21,10 +21,6 @@ Requires user to have rough idea of how object types are named.
 import sys
 
 import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
 
 try:
     import Qt
@@ -38,21 +34,13 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
 from brenpy.qt import bpQtCore
 from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
 
 from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
-from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
 
 from brenfbx.qt import bfQtWidgets, bfSceneMenus, bfSceneModels, bfDataModels,\
-    bfFilterSettings, bfPropertyModels, bfPropertyWidgets
-from brenfbx.qt import bfPropertyQtCache
+    bfFilterSettings, bfPropertyWidgets
 from brenfbx.qt import bfModelManagers
 from brenfbx.qt import bfConnectionWidgets
 
@@ -275,18 +263,18 @@ class BFbxTypeFilterSettingsWidget(Qt.QtWidgets.QWidget):
         self.model_combo = Qt.QtWidgets.QComboBox()
 
         self.model_combo.addItems(
-            self._settings.fbx_types().models()
+            self._settings.fbx_type_settings().model_type_names()
         )
 
         self.model_combo.activated.connect(self._switch_model)
 
         self.model_combo.setCurrentIndex(
-            self._settings.fbx_types().model_index()
+            self._settings.fbx_type_settings().model_type_index()
         )
 
         # set view model
         self._switch_model(
-            self._settings.fbx_types().model_index()
+            self._settings.fbx_type_settings().model_type_index()
         )
 
         # create layout
@@ -300,15 +288,15 @@ class BFbxTypeFilterSettingsWidget(Qt.QtWidgets.QWidget):
         self._types_tree_model = bfDataModels.BFbxClassIdBoolTreeModel()
 
         self._types_list_model.set_data_root(
-            self._settings.fbx_types().data_root()
+            self._settings.fbx_type_settings().data_root()
         )
 
         self._types_tree_model.set_data_root(
-            self._settings.fbx_types().data_root()
+            self._settings.fbx_type_settings().data_root()
         )
 
     def _switch_model(self, index):
-        res = self._settings.fbx_types().set_model_index(index)
+        res = self._settings.fbx_type_settings().set_model_type_index(index)
 
         if res:
             if index == 0:
@@ -468,7 +456,7 @@ class BfSceneTreeWidget(Qt.QtWidgets.QWidget):
         self.view.setModel(self._type_filter_model)
 
         self._type_filter_model.set_fbx_types(
-            self._filter_settings.fbx_types().enabled_class_ids()
+            self._filter_settings.fbx_type_settings().enabled_class_ids()
         )
 
         self.filter_btn.clicked.connect(
@@ -629,7 +617,7 @@ class BfSceneTreeWidget(Qt.QtWidgets.QWidget):
         )
 
         self._type_filter_model.set_fbx_types(
-            self._filter_settings.fbx_types().enabled_class_ids()
+            self._filter_settings.fbx_type_settings().enabled_class_ids()
         )
 
         self.view.expandAll()
@@ -1130,7 +1118,7 @@ class Test1(Qt.QtWidgets.QWidget):
 
         self._file_path = file_path
 
-        self._scene, self._fbx_manager = bfIO.load_file(
+        self._scene, self._fbx_manager = bfIO.load_fbx_file(
             self._file_path,
             fbx_manager=None
         )
@@ -1169,7 +1157,7 @@ class Test2(Qt.QtWidgets.QWidget):
 
         self._file_path = file_path
 
-        self._scene, self._fbx_manager = bfIO.load_file(
+        self._scene, self._fbx_manager = bfIO.load_fbx_file(
             self._file_path,
             fbx_manager=None
         )

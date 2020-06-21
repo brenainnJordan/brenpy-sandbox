@@ -5,20 +5,14 @@ Created on 3 Aug 2019
 @author: Bren
 '''
 
-
-import sys
 from types import NoneType
 
-import os
 import fbx
-import FbxCommon
 import inspect
 
-from brenfbx.core import bfIO
-from brenfbx.core import bfData
 from brenfbx.core import bfCore
-from brenfbx.core import bfUtils
-from brenfbx.core import bfProperty
+from brenfbx.utils import bfFbxUtils
+from brenfbx.fbxsdk.core import bfProperty
 
 
 class BFbxObject(object):
@@ -53,7 +47,7 @@ class BFbxObject(object):
     @classmethod
     def log(cls, msg, err=False):
         if err:
-            raise bfCore.BFbxError(msg)
+            raise bfCore.BfError(msg)
         else:
             print msg
 
@@ -96,7 +90,7 @@ class BFbxObject(object):
             if fn_cls is not None:
                 property_fn = fn_cls(fbx_property)
             else:
-                property_fn = bfProperty.BFbxProperty(fbx_property)
+                property_fn = bfProperty.BfProperty(fbx_property)
 
         else:
             # if property does not exist, create property with default
@@ -106,7 +100,7 @@ class BFbxObject(object):
                     self._object, data_type, name
                 )
             else:
-                property_fn = bfProperty.BFbxProperty.Create(
+                property_fn = bfProperty.BfProperty.Create(
                     self._object, data_type, name
                 )
 
@@ -695,7 +689,7 @@ class MMdEvaluator(FbxObjectMultModifier):
             fbx_object = destination
 
         # get brType
-        cls = bfUtils.get_br_type_cls(fbx_object, err=True, verbose=True)
+        cls = bfFbxUtils.get_br_type_cls(fbx_object, err=True, verbose=True)
 
         # check class matches destination base class types
         if not issubclass(cls, self.DESTINATION_BR_BASE_CLASSES):
@@ -735,7 +729,7 @@ class MMdEvaluator(FbxObjectMultModifier):
 #         for destination in self.GetDestinations():
         for destination in self.Destinations.GetInputs():
 
-            fn_cls = bfUtils.get_br_type_cls(
+            fn_cls = bfFbxUtils.get_br_type_cls(
                 destination, err=True, verbose=True
             )
 
@@ -873,7 +867,7 @@ class BrObjectArrayOld(BFbxObject):
             return None
 
         if wrap:
-            fn_cls = bfUtils.get_br_type_cls(
+            fn_cls = bfFbxUtils.get_br_type_cls(
                 fbx_object, err=False, verbose=False)
 
             if fn_cls is None:
@@ -990,7 +984,7 @@ class BrObjectArray(BFbxObject):
             return None
 
         if wrap:
-            fn_cls = bfUtils.get_br_type_cls(
+            fn_cls = bfFbxUtils.get_br_type_cls(
                 fbx_object, err=False, verbose=False)
 
             if fn_cls is None:

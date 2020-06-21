@@ -31,7 +31,8 @@ import FbxCommon
 from brenfbx.core import bfData
 reload(bfData)
 
-from brenpy.utils import bpStr
+from brenpy.core import bpStr
+
 reload(bpStr)
 
 try:
@@ -47,7 +48,6 @@ except ImportError:
     from PySide2.QtCore import SIGNAL
 
 # import icon resources into memory
-from brenpy.examples.qt_model_tutorials.icons import icons
 
 # TEST_FILE = r"C:\Users\Bren\Desktop\tests\joints_fbx_ascii_test_001.fbx"
 # TEST_FILE = r"C:\Users\Bren\Desktop\tests\rig_to_test_002.fbx"

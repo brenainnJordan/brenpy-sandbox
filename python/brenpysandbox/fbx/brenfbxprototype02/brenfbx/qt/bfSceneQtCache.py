@@ -29,25 +29,14 @@ such as listing property components such as xyz values as children.
 
 '''
 
-import sys
-
 import os
 import fbx
-import FbxCommon
-import inspect
-from types import NoneType
 
 from brenfbx.core import bfIO
-from brenfbx.core import bfData
-from brenfbx.core import bfUtils
+from brenfbx.utils import bfFbxUtils
 from brenfbx.core import bfCore
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
-
 # from brenrig.sandbox import fbx_prototype_01
-from brenfbx.core import bfObject
-from brenfbx.core import bfProperty
 
 from brenfbx.qt import bfPropertyQtCache
 from brenfbx.qt import bfQtCore
@@ -128,7 +117,7 @@ class BFbxSceneCache(object):
         """
 
         if not isinstance(fbx_object, (fbx.FbxObject)):
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Cannot add object to cache, must be instance of FbxObject or subclass. ({})".format(
                     fbx_object
                 )
@@ -139,7 +128,7 @@ class BFbxSceneCache(object):
 
         # check if this object is already cached
         if object_id in self.id_data:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Object already cached: {}".format(fbx_object.GetName())
             )
 
@@ -169,7 +158,7 @@ class BFbxSceneCache(object):
         """Remove FbxObject or FbxNode to cache
         """
         if not isinstance(fbx_object, (fbx.FbxObject)):
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "object to remove must be instance of FbxObject or subclass. ({})".format(
                     fbx_object
                 )
@@ -180,7 +169,7 @@ class BFbxSceneCache(object):
 
         # check if this object is in the cached
         if object_id not in self.id_data:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Object not cached, cannot remove: {}".format(
                     fbx_object.GetName())
             )
@@ -215,7 +204,7 @@ class BFbxSceneCache(object):
 
         # check user input
         if not issubclass(fbx_cls, fbx.FbxObject):
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Fbx class must be subclass of FbxObject: {}".format(
                     fbx_cls
                 )
@@ -225,7 +214,7 @@ class BFbxSceneCache(object):
         if name is None:
             name = str(fbx_cls.__name__)
 
-        name = bfUtils.get_unique_name(name, self._scene)
+        name = bfFbxUtils.get_unique_name(name, self._scene)
 
         # create object
         fbx_object = fbx_cls.Create(self._fbx_manager, name)
@@ -268,7 +257,7 @@ class BFbxSceneCache(object):
             object_id = object_id.value()
 
         if object_id not in self.id_data:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "No id found: {}".format(object_id)
             )
 #             return None
@@ -327,7 +316,7 @@ class BFbxSceneCache(object):
 
 
 def test(fbx_file):
-    fbx_scene, fbx_manager = bfIO.load_file(
+    fbx_scene, fbx_manager = bfIO.load_fbx_file(
         fbx_file,
         fbx_manager=None,
         settings=None,

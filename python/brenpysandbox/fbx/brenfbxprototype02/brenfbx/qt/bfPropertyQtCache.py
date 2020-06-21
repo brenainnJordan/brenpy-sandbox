@@ -1,25 +1,15 @@
 """
 """
 
-import sys
-
 import os
 import fbx
-import FbxCommon
-import inspect
-from types import NoneType
 
 from brenfbx.core import bfIO
-from brenfbx.core import bfData
-from brenfbx.core import bfUtils
+from brenfbx.utils import bfFbxUtils
 from brenfbx.core import bfCore
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
-
 # from brenrig.sandbox import fbx_prototype_01
-from brenfbx.core import bfObject
-from brenfbx.core import bfProperty
+from brenfbx.fbxsdk.core import bfProperty
 from brenfbx.qt import bfQtCore
 
 
@@ -90,7 +80,7 @@ class BFbxPropertyRoot(object):
     def get_child(self, child_index):
         if child_index >= self.child_count():
 
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Child index out of range: {} ({}.{})".format(
                     child_index,
                     self.fbx_object().GetName(),
@@ -208,7 +198,7 @@ class BFbxPropertyItem(BFbxPropertyRoot):
 
             parent = parent.getParent()
 
-        raise bfCore.BFbxError("Unable to find property root")
+        raise bfCore.BfError("Unable to find property root")
 
 
 """
@@ -350,7 +340,7 @@ class BFbxPropertyCache(object):
 #         else:
 #             uid = 0
 
-        uid = bfUtils.get_fbx_property_object_index(
+        uid = bfFbxUtils.get_fbx_property_object_index(
             item.fbx_property()
         )
 
@@ -418,7 +408,7 @@ class BFbxPropertyCache(object):
         """
 
         # TODO (find specific Fn class)
-        property_fn = bfProperty.BFbxProperty(fbx_property)
+        property_fn = bfProperty.BfProperty(fbx_property)
 
         if not property_fn.IsValid():
             print "Failed to initialize property Fn: {}.{}".format(
@@ -432,10 +422,10 @@ class BFbxPropertyCache(object):
 
         self.assign_unique_id(property_item)
 
-        parent_item.add_child(property_item)
+        parent_item.set_child_widget(property_item)
 
         # add child properties
-        for child_property in bfUtils.get_child_properties(fbx_property):
+        for child_property in bfFbxUtils.get_child_properties(fbx_property):
             self.add_property_child(child_property, property_item)
 
     def create_property_hierarchy(self, fbx_object):
@@ -447,11 +437,11 @@ class BFbxPropertyCache(object):
 
         """
 
-        root_property_fn = bfProperty.BFbxProperty(fbx_object.RootProperty)
+        root_property_fn = bfProperty.BfProperty(fbx_object.RootProperty)
         self._root = BFbxPropertyRoot(root_property_fn)
         self.assign_unique_id(self._root)
 
-        for fbx_property in bfUtils.get_root_properties(fbx_object):
+        for fbx_property in bfFbxUtils.get_root_properties(fbx_object):
             self.add_property_child(fbx_property, self._root)
 
 #         root.debug()
@@ -466,7 +456,7 @@ def property_test(fbx_file):
     #
     #     fbx_scene.ConnectSrcObject(fbx_object)
 
-    fbx_scene, fbx_manager = bfIO.load_file(
+    fbx_scene, fbx_manager = bfIO.load_fbx_file(
         fbx_file,
         fbx_manager=None,
         settings=None,

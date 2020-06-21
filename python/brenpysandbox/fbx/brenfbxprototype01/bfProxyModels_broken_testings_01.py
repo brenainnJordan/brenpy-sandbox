@@ -2,15 +2,6 @@
 stuff
 '''
 
-import sys
-
-import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
-from numpy import source
-
 try:
     import Qt
 except ImportError:
@@ -23,24 +14,13 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
 from brenpy.qt import bpQtCore
-from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
 
-from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
 from brenfbx.core import bfCore
-from brenfbx.core import bfData
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
 
-from brenfbx.qt import bfQtWidgets, bfSceneQtCache, bfQtCore
+from brenfbx.qt import bfSceneQtCache, bfQtCore
 from brenfbx.qt import bfPropertyQtCache
-from brenfbx.qt import bfIcons
 
-from brenfbx.qt import bfSceneModels
 from brenfbx.qt import bfPropertyModels
 
 
@@ -186,7 +166,7 @@ class BFbxScenePropertiesProxyModel(Qt.QtCore.QAbstractProxyModel):
             source_path = bpQtCore.IndexPath(source_index)
 
             if source_path.key() not in self._source_to_proxy_map:
-                raise bfCore.BFbxError(
+                raise bfCore.BfError(
                     "Failed to map scene index from source: {}".format(
                         source_index
                     )
@@ -206,7 +186,7 @@ class BFbxScenePropertiesProxyModel(Qt.QtCore.QAbstractProxyModel):
             return proxy_index
 
         else:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Failed to map from source: {}".format(source_index)
             )
 
@@ -226,7 +206,7 @@ class BFbxScenePropertiesProxyModel(Qt.QtCore.QAbstractProxyModel):
             proxy_path = bpQtCore.IndexPath(proxy_index)
 
             if proxy_path.key() not in self._proxy_to_source_map:
-                raise bfCore.BFbxError(
+                raise bfCore.BfError(
                     "Failed to map scene index to source: {}".format(
                         proxy_index
                     )
@@ -254,14 +234,14 @@ class BFbxScenePropertiesProxyModel(Qt.QtCore.QAbstractProxyModel):
             return source_index
 
         else:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Failed to map to source: {}".format(proxy_index)
             )
 
     def get_property_key(self, index):
 
         if not self.is_property_index(index):
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Cannot create key for non-property index: {}".format(index)
             )
 

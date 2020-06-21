@@ -7,10 +7,6 @@ Start with object connection widget and go from there...
 import sys
 
 import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
 
 try:
     import Qt
@@ -24,21 +20,13 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
 from brenpy.qt import bpQtCore
 from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
 
 from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
 from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
 
-from brenfbx.qt import bfQtWidgets, bfSceneMenus, bfSceneModels, bfDataModels,\
-    bfFilterSettings, bfPropertyModels, bfPropertyWidgets, bfConnectionModels
-from brenfbx.qt import bfPropertyQtCache
+from brenfbx.qt import bfSceneModels, bfPropertyModels, bfConnectionModels
 
 
 class BpPropertyCompleter(bpQtWidgets.BpFilterCompleter):
@@ -291,7 +279,7 @@ class BfConnectionWidgetBase(Qt.QtWidgets.QWidget):
 #         self._name_filter_model = bpQtCore.BpSortFilterProxyModel()
 
         if self.CONNECTION_MODEL is None:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Cannot instance connection widget base class"
             )
         else:
@@ -499,7 +487,7 @@ class Test1(Qt.QtWidgets.QWidget):
 
         self._file_path = file_path
 
-        self._scene, self._fbx_manager = bfIO.load_file(
+        self._scene, self._fbx_manager = bfIO.load_fbx_file(
             self._file_path,
             fbx_manager=None
         )

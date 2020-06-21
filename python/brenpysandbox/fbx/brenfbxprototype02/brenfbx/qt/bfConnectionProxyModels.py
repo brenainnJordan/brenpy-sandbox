@@ -53,10 +53,6 @@ TODO should we store our own item to list model?
 import sys
 
 import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
 
 try:
     import Qt
@@ -70,20 +66,12 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
 from brenpy.qt import bpQtCore
 from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
 
 from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
-from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
 
-from brenfbx.qt import bfSceneMenus, bfSceneModels, bfDataModels,\
-    bfFilterSettings, bfPropertyModels, bfQtCore, bfSceneQtCache
+from brenfbx.qt import bfSceneModels, bfPropertyModels, bfQtCore, bfSceneQtCache
 
 from brenfbx.qt import bfPropertyQtCache
 
@@ -827,7 +815,7 @@ class Test1(Qt.QtWidgets.QWidget):
 
         self._file_path = file_path
 
-        self._scene, self._fbx_manager = bfIO.load_file(
+        self._scene, self._fbx_manager = bfIO.load_fbx_file(
             self._file_path,
             fbx_manager=None
         )

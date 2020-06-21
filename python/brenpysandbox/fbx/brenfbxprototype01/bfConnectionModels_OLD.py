@@ -7,14 +7,6 @@ For now we're only dealing with Src connections.
 
 """
 
-import sys
-
-import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
-
 try:
     import Qt
 except ImportError:
@@ -27,21 +19,9 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
-from brenpy.qt import bpQtCore
-from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
+from brenfbx.utils import bfFbxUtils
 
-from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
-from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
-
-from brenfbx.qt import bfQtWidgets, bfSceneMenus, bfSceneModels, bfDataModels,\
-    bfFilterSettings, bfPropertyModels, bfQtCore
-from brenfbx.qt import bfPropertyQtCache
+from brenfbx.qt import bfQtCore
 
 
 # base models ---
@@ -283,7 +263,7 @@ class BFbxPropertyConnectionModelBase(BFbxConnectionModelBase):
                 "Failed to get connected FbxProperty"
             )
 
-        con_property_id = bfUtils.get_fbx_property_object_index(
+        con_property_id = bfFbxUtils.get_fbx_property_object_index(
             con_property
         )
 

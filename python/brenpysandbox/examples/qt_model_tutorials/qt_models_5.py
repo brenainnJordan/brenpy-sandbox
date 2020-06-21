@@ -55,7 +55,7 @@ class Node(object):
         self.setName(name)
 
         if parent is not None:
-            parent.add_child(self)
+            parent.set_child_widget(self)
 
     def type(self):
         return self.__class__.__name__
@@ -113,7 +113,7 @@ class Node(object):
         return self._parent
 
     def setParent(self, parent):
-        parent.add_child(self)
+        parent.set_child_widget(self)
 
     def log(self, level=-1):
 

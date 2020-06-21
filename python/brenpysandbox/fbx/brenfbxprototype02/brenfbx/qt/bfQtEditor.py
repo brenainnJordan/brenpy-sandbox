@@ -11,10 +11,6 @@ Created on 4 Aug 2019
 import sys
 
 import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
 
 try:
     import Qt
@@ -29,18 +25,7 @@ except ImportError:
     from PySide2.QtCore import SIGNAL
 
 from brenfbx.core import bfIO
-from brenfbx.core import bfData
-from brenfbx.core import bfCore
-from brenfbx.core import bfUtils
-from brenfbx.core import bfProperty
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
-from brenpy.qt import bpQtCore
-
-
-from brenrig.sandbox.fbx_prototype_01 import brModifiers
-from brenrig.sandbox.fbx_prototype_01 import brEvaluators
 from brenrig.sandbox.fbx_prototype_01 import brSession
 from brenrig.sandbox.fbx_prototype_01 import brQtSsession
 from brenrig.sandbox.fbx_prototype_01 import test_scene_02
@@ -725,7 +710,7 @@ class BFbxEditor(Qt.QtWidgets.QMainWindow):
 #         self._destroy_fbx_objects()
 
         # create session
-        self._session, self._fbx_manager = bfIO.load_file(
+        self._session, self._fbx_manager = bfIO.load_fbx_file(
             self._file_path,
             fbx_manager=self._fbx_manager
         )

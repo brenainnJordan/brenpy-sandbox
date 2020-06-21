@@ -12,18 +12,13 @@ Needs some restructuring.
 
 '''
 
-import sys
 from types import NoneType
 
-import os
 import fbx
-import FbxCommon
-import inspect
 
-from brenfbx.core import bfIO
 from brenfbx.core import bfData
 from brenfbx.core import bfCore
-from brenfbx.core import bfUtils
+from brenfbx.utils import bfFbxUtils
 
 
 class BFbxProperty(object):
@@ -116,7 +111,7 @@ class BFbxProperty(object):
         return name
 
     def GetTypeStr(self):
-        return bfUtils.get_property_type_str(self._property)
+        return bfFbxUtils.get_property_type_str(self._property)
 
     @classmethod
     def Create(cls, fbx_object, data_type, name):
@@ -240,7 +235,7 @@ class InputReferenceProperty(BFbxProperty):
         if not isinstance(
             value, self.REFERENCE_TYPES
         ):
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Input value must be of type: {}, not: {}".format(
                     self.REFERENCE_TYPES,
                     type(value)
@@ -283,7 +278,7 @@ class InputReferenceArrayProperty(BFbxProperty):
         if not isinstance(
             input_object, self.REFERENCE_TYPES
         ):
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Input object must be of type: {}, not: {}".format(
                     self.REFERENCE_TYPES,
                     type(input_object)
@@ -297,7 +292,7 @@ class InputReferenceArrayProperty(BFbxProperty):
             input_object
         ):
             # TODO is an error neccesary?
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Input object already connected: {}".format(
                     input_object.GetName())
             )
@@ -321,7 +316,7 @@ class InputReferenceArrayProperty(BFbxProperty):
             input_object
         ):
             # TODO format message depending on object type
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "Input object is not connected: {}".format(
                     input_object.GetName())
             )
@@ -547,7 +542,7 @@ class FSEnumProperty(BFbxProperty):
         elif value in self.ENUM_NAMES:
             enum_index = self.ENUM_NAMES.index(value)
         else:
-            raise bfCore.BFbxError(
+            raise bfCore.BfError(
                 "value not recognized, must be either fbx.eEuler enum or name: {}".format(value))
 
         res = self._cast_property.Set(enum_index)

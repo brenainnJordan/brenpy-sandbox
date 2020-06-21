@@ -4,14 +4,6 @@
 
 '''
 
-import sys
-
-import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
-
 try:
     import Qt
 except ImportError:
@@ -24,20 +16,12 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
 from brenpy.qt import bpQtCore
-from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
 
-from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
-from brenfbx.core import bfCore
-from brenfbx.core import bfData
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
+from brenfbx.utils import bfFbxUtils
+from brenfbx.fbxsdk.core import bfProperty
 
-from brenfbx.qt import bfQtWidgets, bfQtCore, bfSceneQtCache
+from brenfbx.qt import bfQtCore, bfSceneQtCache
 from brenfbx.qt import bfPropertyQtCache
 from brenfbx.qt import bfIcons
 
@@ -467,7 +451,7 @@ class BFbxPropertyModel(bpQtCore.BpAbstractItemModel):
                     return prop_fn.GetStr()
 
                 else:
-                    return bfUtils.get_property_value_as_str(
+                    return bfFbxUtils.get_property_value_as_str(
                         prop_fn.CastProperty()
                     )
             elif column == 2:
@@ -556,7 +540,7 @@ class BFbxPropertyModel(bpQtCore.BpAbstractItemModel):
 
             else:
 
-                value = bfUtils.get_property_value_from_str(
+                value = bfFbxUtils.get_property_value_from_str(
                     prop_fn.Property(),
                     value
                 )

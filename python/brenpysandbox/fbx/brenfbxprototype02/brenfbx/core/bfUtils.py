@@ -6,7 +6,7 @@ import fbx
 
 from brenfbx.core import bfData
 
-from brenpy.utils import bpStr
+from brenpy.core import bpStr
 
 
 # create methods ---

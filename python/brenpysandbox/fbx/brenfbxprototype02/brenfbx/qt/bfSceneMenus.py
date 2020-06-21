@@ -1,12 +1,5 @@
 """
 """
-import sys
-
-import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
 
 try:
     import Qt
@@ -19,20 +12,6 @@ try:
     from PySide.QtCore import SIGNAL
 except ImportError:
     from PySide2.QtCore import SIGNAL
-
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
-from brenpy.qt import bpQtCore
-from brenpy.qt.icons import icons8
-
-from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
-from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
-
-from brenfbx.qt import bfQtWidgets
-from brenfbx.qt import bfQtCache
 
 
 class BfEditMenu(Qt.QtWidgets.QMenu):

@@ -1,14 +1,6 @@
 """Stuff
 """
 
-import sys
-
-import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
-
 try:
     import Qt
 except ImportError:
@@ -21,21 +13,7 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
-from brenpy.qt import bpQtCore
-from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
-
-from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
-from brenfbx.core import bfCore
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
-
-from brenfbx.qt import bfSceneMenus, bfSceneModels, bfDataModels,\
-    bfFilterSettings, bfPropertyModels, bfQtCore, bfSceneQtCache
-from brenfbx.qt import bfPropertyQtCache
+from brenfbx.qt import bfSceneModels, bfPropertyModels
 from brenfbx.qt import bfConnectionProxyModels
 
 

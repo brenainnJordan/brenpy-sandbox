@@ -7,14 +7,6 @@ Instead of
 
 '''
 
-import sys
-
-import os
-import fbx
-import FbxCommon
-import inspect
-from types import NoneType
-
 try:
     import Qt
 except ImportError:
@@ -27,22 +19,12 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenpy.cg import bpEuler
-from brenpy.utils import bpStr
+from brenpy.core import bpStr
 from brenpy.qt import bpQtCore
 from brenpy.qt import bpQtWidgets
-from brenpy.qt.icons import icons8
 
-from brenfbx.core import bfIO
-from brenfbx.core import bfUtils
 from brenfbx.core import bfCore
-from brenfbx.core import bfData
-from brenfbx.core import bfProperty
-from brenfbx.core import bfObject
-
-from brenfbx.qt import bfQtWidgets
-from brenfbx.qt import bfPropertyQtCache
-from brenfbx.qt import bfIcons
+from brenfbx.fbxsdk.core import bfProperty
 
 
 class CustomCompleter(Qt.QtWidgets.QCompleter):
@@ -310,8 +292,8 @@ class PropertyFnStrDeligate(Qt.QtWidgets.QItemDelegate):
         elif isinstance(
             prop_fn,
             (
-                bfProperty.InputReferenceProperty,
-                bfProperty.InputReferenceArrayProperty
+                    bfProperty.InputReferenceProperty,
+                    bfProperty.InputReferenceArrayProperty
             )
         ):
             # custom editor inherits from QLineEdit
@@ -355,7 +337,7 @@ class PropertyFnStrDeligate(Qt.QtWidgets.QItemDelegate):
 
             model.setData(index, value, Qt.QtCore.Qt.EditRole)
 
-        except (bfCore.BFbxError, bpStr.BpStrException) as err:
+        except (bfCore.BfError, bpStr.BpStrException) as err:
 
             """
             NOTE
