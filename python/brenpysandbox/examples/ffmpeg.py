@@ -14,7 +14,7 @@ def rename_file_to_safe(file_path):
     safe_filename = filename.replace(" ", "_")
     safe_filepath = os.path.join(dir, safe_filename)
     os.rename(file_path, safe_filepath)
-    return safe_filename
+    return safe_filepath
     
 
 def video_to_frames(video, output_dir, ext="png", padding=3):
@@ -71,16 +71,40 @@ def renumber_frames(dir):
         os.rename(filepath, new_filepath)
 
 
-#in_dir = r"F:\Jobs\Reel\Material"
-#out_dir = r"F:\Jobs\Reel\Material\image_sequences"
+def m4a_to_mp3(root_path):
+    for filename in os.listdir(root_path):
+        if not filename.endswith(".m4a"):
+            continue
 
-in_dir = r"F:\Jobs\Reel\Material\temp3"
-out_dir = r"F:\Jobs\Reel\Material\image_sequences1"
+        file_path = os.path.join(root_path, filename)
+        file_path = rename_file_to_safe(file_path)
+        print(file_path)
 
-#videos_to_frames(in_dir, out_dir, ext="jpg", padding=5, video_ext="webm")
+        mp3_file_path = file_path.replace(".m4a", ".mp3")
 
-#video_input = r"F:\Jobs\Reel\Material\image_sequences1\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke_%05d.jpg" 
-#get_duplicate_frames(video_input)
+        cmd = r"ffmpeg -i {input} {output}".format(input=file_path, output=mp3_file_path)
 
-dir = r"F:\Jobs\Reel\Material\image_sequences1\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke"
-renumber_frames(dir)
+        print(cmd)
+
+        process = subprocess.Popen(cmd, shell=True)
+        process.wait()
+
+    return True
+
+if __name__ == "__main__":
+
+    m4a_to_mp3(r"C:\Data\Bands\BadFire\songs\what_should_have_been\backing")
+
+    #in_dir = r"F:\Jobs\Reel\Material"
+    #out_dir = r"F:\Jobs\Reel\Material\image_sequences"
+
+    # in_dir = r"F:\Jobs\Reel\Material\temp3"
+    # out_dir = r"F:\Jobs\Reel\Material\image_sequences1"
+
+    #videos_to_frames(in_dir, out_dir, ext="jpg", padding=5, video_ext="webm")
+
+    #video_input = r"F:\Jobs\Reel\Material\image_sequences1\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke_%05d.jpg"
+    #get_duplicate_frames(video_input)
+
+    # dir = r"F:\Jobs\Reel\Material\image_sequences1\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke"
+    # renumber_frames(dir)
