@@ -1,7 +1,0 @@
-<RCC>
- <qresource>
-  <file>out_camera.png</file>
-  <file>out_joint.png</file>
-  <file>out_locator.png</file>
- </qresource>
-</RCC>

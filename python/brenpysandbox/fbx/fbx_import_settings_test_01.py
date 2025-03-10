@@ -2,7 +2,7 @@ import fbx
 
 import sys
 
-import os
+import brenfbx.utils.fbx_utils.bfFbxPropertyUtils
 
 try:
     from Qt import QtCore
@@ -21,10 +21,8 @@ try:
 except ImportError:
     from PySide2.QtCore import SIGNAL
 
-from brenfbx.utils import bfFbxUtils
-from brenfbx.qt.property import bfQtPropertyValueWidgets
 from brenfbx.qt.property import bfQtPropertyTreeWidgets
-from brenfbx.qt.property import bfQtPropertyItems
+from brenfbx.items import bfPropertyItems
 from brenfbx.qt.property import bfQtPropertyModels
 
 def inspect_child_properties(fbx_property, indent=0):
@@ -50,7 +48,7 @@ def test_1():
 
     print settings
 
-    root_properties = bfFbxUtils.get_root_properties(settings)
+    root_properties = brenfbx.utils.fbx_utils.bfFbxPropertyUtils.get_root_properties(settings)
 
     for property in root_properties:
         print property.GetName()
@@ -71,8 +69,8 @@ class Test2(object):
             self.fbx_manager, fbx.IOSROOT
         )
 
-        item_manager = bfQtPropertyItems.FbxPropertyTreeItemManager(self.fbx_manager)
-        item_manager.set_debug_level(item_manager.LEVELS.mid())
+        item_manager = bfPropertyItems.BfFbxPropertyTreeItemManager(self.fbx_manager)
+        item_manager.set_debug_level(item_manager.LEVELS.mid)
 
         item_manager.set_fbx_object(self.settings)
 
@@ -96,6 +94,7 @@ class Test2(object):
 
 if __name__ == "__main__":
     # test_1()
+    # TODO use bf environment
 
     app = QtWidgets.QApplication(sys.argv)
 

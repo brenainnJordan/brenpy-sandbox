@@ -702,7 +702,7 @@ class Gui(Qt.QtWidgets.QWidget):
         self._fbx_manager.Destroy()
         del self._fbx_manager  # , fbx_scene
 
-        return Qt.QtWidgets.QWidget.destroy(self, *args, **kwargs)
+        return Qt.QtWidgets.QWidget.deconstruct(self, *args, **kwargs)
 
 #         # test adding a new node
 #         new_node = Node("test")

@@ -1308,7 +1308,7 @@ class Gui(Qt.QtWidgets.QMainWindow):
         self._fbx_manager.Destroy()
         del self._fbx_manager  # , fbx_scene
 
-        return Qt.QtWidgets.QWidget.destroy(self, *args, **kwargs)
+        return Qt.QtWidgets.QWidget.deconstruct(self, *args, **kwargs)
 
 
 if __name__ == "__main__":

@@ -19,9 +19,7 @@ import sys
 
 from Qt import QtCore
 from Qt import QtWidgets
-from Qt import QtGui
 
-from brenpy.qt.item import bpQtItemsWidgets
 
 class Item(object):
     def __init__(self, name, id):

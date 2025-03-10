@@ -5,9 +5,8 @@
 import os
 import fbx
 import FbxCommon
-from inspect import isclass
 
-from brenfbx.core import bfIO
+from brenfbx.utils import bfFileUtils
 
 DUMP_DIR = r"D:\Repos\dataDump\brenrig"
 
@@ -171,7 +170,7 @@ def print_root_properties(fbx_object):
 
 def inspect_properties(file_path):
 
-    fbx_scene, fbx_manager = bfIO.load_fbx_file(
+    fbx_scene, fbx_manager = bfFileUtils.load_fbx_file(
         file_path,
         fbx_manager=None,
         settings=None,

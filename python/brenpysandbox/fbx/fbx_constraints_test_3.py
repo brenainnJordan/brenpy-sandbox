@@ -6,7 +6,9 @@ import sys
 from Qt import QtWidgets
 
 import fbx
-from brenfbx.core import bfIO
+from brenfbx.utils import bfFileUtils
+
+
 #
 # TEST_FILE_PATH = r"D:\Repos\dataDump\fbx_tests\maya_constraints_test_003.fbx"
 #
@@ -45,7 +47,7 @@ class Test(QtWidgets.QWidget):
     def __init__(self):
         super(Test, self).__init__()
 
-        self._scene, self.fbx_manager = bfIO.load_fbx_file(
+        self._scene, self.fbx_manager = bfFileUtils.load_fbx_file(
             os.path.join(DUMP_DIR, TEST_FILE),
             fbx_manager=None,
             settings=None,
