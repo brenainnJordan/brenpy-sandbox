@@ -93,6 +93,25 @@ def delete_every_other_frame(dir):
 
     return True
 
+def m4a_to_mp3(root_path):
+    for filename in os.listdir(root_path):
+        if not filename.endswith(".m4a"):
+            continue
+
+        file_path = os.path.join(root_path, filename)
+        file_path = rename_file_to_safe(file_path)
+        print(file_path)
+
+        mp3_file_path = file_path.replace(".m4a", ".mp3")
+
+        cmd = r"ffmpeg -i {input} {output}".format(input=file_path, output=mp3_file_path)
+
+        print(cmd)
+
+        process = subprocess.Popen(cmd, shell=True)
+        process.wait()
+
+    return True
 
 if __name__ == "__main__":
     #in_dir = r"F:\Jobs\Reel\Material"
@@ -119,10 +138,5 @@ if __name__ == "__main__":
     #video_input = r"F:\Jobs\Reel\Material\image_sequences1\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke_%05d.jpg"
     #get_duplicate_frames(video_input)
 
-    # dir = r"F:\Jobs\Reel\Material\image_sequences1\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke"
-    # renumber_frames(dir)
-
-    dir = r"E:\Jobs\_Reel\Material\Axis\deathloop_edit"
-
-    # delete_every_other_frame(dir)
-    renumber_frames(dir)
+dir = r"F:\Jobs\Reel\Material\image_sequences1\4k_30fps_Star_Wars_The_Last_Jedi_-_Kylo_Ren_Meets_With_Supreme_Leader_Snoke"
+renumber_frames(dir)
