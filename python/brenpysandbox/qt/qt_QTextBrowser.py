@@ -13,6 +13,8 @@ PYCHARM_BIN_DIR = r"C:\Program Files\JetBrains\PyCharm Community Edition 2019.2.
 
 
 class SandboxBrowser(QtWidgets.QTextBrowser):
+    """Testing text formatting and hyperlinks in a TextBrowser widget
+    """
     def __init__(self, *args, **kwargs):
         super(SandboxBrowser, self).__init__(*args, **kwargs)
 
@@ -54,13 +56,13 @@ class SandboxBrowser(QtWidgets.QTextBrowser):
             self.append(i)
 
     def _anchor_clicked(self, url):
-        print url.toString()
+        print(url.toString())
 
     def test_3(self):
         self.setAcceptRichText(True)
         self.setOpenExternalLinks(False)
         self.setOpenLinks(False)
-        self.setAutoFormatting(False)
+        self.setAutoFormatting(self.AutoNone)
 
         self.anchorClicked.connect(self._code_anchor_linked)
 
@@ -75,8 +77,8 @@ class SandboxBrowser(QtWidgets.QTextBrowser):
 
     def _code_anchor_linked(self, url):
         path, line = url.toString().split(",")
-        print path
-        print line
+        print(path)
+        print(line)
         self.load_in_pycharm(path, int(line))
 
     def load_in_pycharm(self, file_path, line=0):
